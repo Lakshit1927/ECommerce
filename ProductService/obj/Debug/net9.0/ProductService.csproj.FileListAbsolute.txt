@@ -190,3 +190,5 @@ C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\ProductService\obj\Debu
 C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\ProductService\obj\Debug\net9.0\ProductService.pdb
 C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\ProductService\obj\Debug\net9.0\ProductService.genruntimeconfig.cache
 C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\ProductService\obj\Debug\net9.0\ref\ProductService.dll
+C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\ProductService\obj\Debug\net9.0\ProductService.sourcelink.json
+C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\ProductService\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

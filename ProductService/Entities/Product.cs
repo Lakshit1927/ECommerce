@@ -1,16 +1,13 @@
-namespace Productservice.Entities;
-
-public class Product
+namespace ProductService.Entities
 {
-    public int Id { get; set; }
+    public class Product
+    {
+        public int Id { get; set; }
 
-    public required string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-    public required string Genre { get; set; }
+        public string Description { get; set; } = string.Empty;
 
-    public required decimal Price { get; set; }
-
-    public required DateOnly ReleaseDate { get; set; }
-
-    public required string Description { get; set; }
+        public decimal Price { get; set; }
+    }
 }

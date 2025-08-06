@@ -1,71 +1,59 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Productservice.Data;
-using Productservice.Entities;
-using ProductService.Dtos;
+using ProductService.Data;
+using ProductService.Entities;
 
 namespace ProductService.Endpoints;
 
-    public static class ProductEndpoints
+public static class ProductEndpoints
+{
+    public static void MapProductEndpoints(this WebApplication app)
     {
-        public static RouteGroupBuilder MapProductEndpoints(this WebApplication app)
+        var group = app.MapGroup("/products")
+                       .RequireAuthorization(); // 👈 JWT Authorization required
+
+        // GET all products
+        group.MapGet("/", async (ProductDbContext db) =>
+            await db.Products.ToListAsync());
+
+        // GET product by ID
+        group.MapGet("/{id}", async (int id, ProductDbContext db) =>
         {
-            var group = app.MapGroup("/products");
+            var product = await db.Products.FindAsync(id);
+            return product is null ? Results.NotFound() : Results.Ok(product);
+        });
 
-            // Get All Products
-            group.MapGet("/", async (ProductDbContext db) =>
-                await db.Products.ToListAsync());
-
-            // Create Product
-        group.MapPost("/", async (CreateProductDto dto, ProductDbContext db) =>
-    {
-        var product = new Product
+        // POST - Create new product
+        group.MapPost("/", async (Product product, ProductDbContext db) =>
         {
-            Name = dto.Name,
-            Genre = dto.Genre,
-            Price = dto.Price,
-            ReleaseDate = dto.ReleaseDate,
-            Description = dto.Description // ✅ Add this
-        };
+            db.Products.Add(product);
+            await db.SaveChangesAsync();
+            return Results.Created($"/products/{product.Id}", product);
+        });
 
-        db.Products.Add(product);
-        await db.SaveChangesAsync();
+        // PUT - Update product
+        group.MapPut("/{id}", async (int id, Product updatedProduct, ProductDbContext db) =>
+        {
+            var existing = await db.Products.FindAsync(id);
+            if (existing is null) return Results.NotFound();
 
-        return Results.Created($"/products/{product.Id}", product);
-    });
+            existing.Name = updatedProduct.Name;
+            existing.Description = updatedProduct.Description;
+            existing.Price = updatedProduct.Price;
 
+            await db.SaveChangesAsync();
+            return Results.NoContent();
+        });
 
-            // Get Product by ID
-            group.MapGet("/{id}", async (int id, ProductDbContext db) =>
-            {
-                var product = await db.Products.FindAsync(id);
-                return product is not null ? Results.Ok(product) : Results.NotFound();
-            });
+        // DELETE - Remove product
+        group.MapDelete("/{id}", async (int id, ProductDbContext db) =>
+        {
+            var product = await db.Products.FindAsync(id);
+            if (product is null) return Results.NotFound();
 
-            // Update Product
-            group.MapPut("/{id}", async (int id, UpdateProductDto dto, ProductDbContext db) =>
-            {
-                var product = await db.Products.FindAsync(id);
-                if (product is null) return Results.NotFound();
-
-                product.Name = dto.Name;
-                product.Description = dto.Description;
-                product.Price = dto.Price;
-
-                await db.SaveChangesAsync();
-                return Results.NoContent();
-            });
-
-            // Delete Product
-            group.MapDelete("/{id}", async (int id, ProductDbContext db) =>
-            {
-                var product = await db.Products.FindAsync(id);
-                if (product is null) return Results.NotFound();
-
-                db.Products.Remove(product);
-                await db.SaveChangesAsync();
-                return Results.NoContent();
-            });
-
-            return group;
-        }
+            db.Products.Remove(product);
+            await db.SaveChangesAsync();
+            return Results.NoContent();
+        });
     }
+}

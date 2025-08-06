@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using Productservice.Entities;
+using ProductService.Entities;
 
-namespace Productservice.Data;
-
-public class ProductDbContext : DbContext
+namespace ProductService.Data
 {
-    public ProductDbContext(DbContextOptions<ProductDbContext> options)
-        : base(options)
+    public class ProductDbContext : DbContext
     {
-    }
+        public ProductDbContext(DbContextOptions<ProductDbContext> options)
+            : base(options)
+        {
+        }
 
-    public DbSet<Product> Products => Set<Product>();
+        public DbSet<Product> Products { get; set; }
+    }
 }
