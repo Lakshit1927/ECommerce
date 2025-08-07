@@ -4,36 +4,66 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using AuthService.Models;
 
-namespace AuthService.Services
+namespace AuthService.Services;
+
+public class TokenService
 {
-    public class TokenService
+    private readonly IConfiguration _config;
+    private readonly ILogger<TokenService> _logger;
+
+    public TokenService(IConfiguration config, ILogger<TokenService> logger)
     {
-        private readonly IConfiguration _config;
+        _config = config;
+        _logger = logger;
+    }
 
-        public TokenService(IConfiguration config)
+    public string CreateToken(User user)
+    {
+        try
         {
-            _config = config;
-        }
+            var jwtSettings = _config.GetSection("Jwt");
+            var key = jwtSettings["Key"];
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
 
-        public string CreateToken(User user)
-        {
-            var claims = new[]
+            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
             {
-                new Claim(ClaimTypes.Name, user.Username)
+                throw new InvalidOperationException("JWT configuration is incomplete");
+            }
+
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, user.Username),
+                new(ClaimTypes.Email, user.Email),
+                new("username", user.Username),
+                new("email", user.Email),
+                new("userId", user.Id.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: creds
-            );
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddHours(24), // 24 hour expiration
+                Issuer = issuer,
+                Audience = audience,
+                SigningCredentials = credentials
+            };
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            _logger.LogDebug("JWT token created for user: {Username}", user.Username);
+            
+            return tokenHandler.WriteToken(token);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating JWT token for user: {Username}", user.Username);
+            throw;
         }
     }
 }
