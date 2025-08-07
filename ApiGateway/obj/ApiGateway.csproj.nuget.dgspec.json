@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\Project C#\\ECommerce\\ApiGateway\\ApiGateway.csproj": {}
+    "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\ProjectCSharp\\ECommerce\\ApiGateway\\ApiGateway.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\Project C#\\ECommerce\\ApiGateway\\ApiGateway.csproj": {
+    "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\ProjectCSharp\\ECommerce\\ApiGateway\\ApiGateway.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\Project C#\\ECommerce\\ApiGateway\\ApiGateway.csproj",
+        "projectUniqueName": "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\ProjectCSharp\\ECommerce\\ApiGateway\\ApiGateway.csproj",
         "projectName": "ApiGateway",
-        "projectPath": "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\Project C#\\ECommerce\\ApiGateway\\ApiGateway.csproj",
+        "projectPath": "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\ProjectCSharp\\ECommerce\\ApiGateway\\ApiGateway.csproj",
         "packagesPath": "C:\\Users\\DHANANJAY\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\Project C#\\ECommerce\\ApiGateway\\obj\\",
+        "outputPath": "C:\\Users\\DHANANJAY\\OneDrive\\Desktop\\ProjectCSharp\\ECommerce\\ApiGateway\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,13 +50,29 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "AspNetCore.HealthChecks.Uris": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.7, )"
             },
+            "Microsoft.Extensions.Diagnostics.HealthChecks": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[9.0.3, )"
+            },
+            "Yarp.ReverseProxy": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             }
           },
           "imports": [

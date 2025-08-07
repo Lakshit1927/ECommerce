@@ -1,19 +1,28 @@
-namespace OrderService.Entities
+using System.ComponentModel.DataAnnotations;
+
+namespace OrderService.Entities;
+
+public class Order
 {
-    public class Order
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string CustomerName { get; set; } = string.Empty;
+    [Required]
+    [StringLength(100)]
+    public string CustomerName { get; set; } = string.Empty;
 
-        public string Address { get; set; } = string.Empty;
+    [Required]
+    [StringLength(200)]
+    public string Address { get; set; } = string.Empty;
 
-        public List<int> ProductIds { get; set; } = new();
+    [Required]
+    public List<int> ProductIds { get; set; } = new();
 
-        public decimal TotalAmount { get; set; }
+    [Range(0.01, double.MaxValue)]
+    public decimal TotalAmount { get; set; }
 
-        public DateTime OrderDate { get; set; }
+    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

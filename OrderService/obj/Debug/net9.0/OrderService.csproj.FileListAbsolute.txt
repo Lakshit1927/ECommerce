@@ -164,3 +164,15 @@ C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\OrderService\bin\Debug\
 C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\OrderService\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\OrderService\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\DHANANJAY\OneDrive\Desktop\Project C#\ECommerce\OrderService\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.csproj.AssemblyReference.cache
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.AssemblyInfoInputs.cache
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.AssemblyInfo.cs
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.csproj.CoreCompileInputs.cache
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.sourcelink.json
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.dll
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\refint\OrderService.dll
+C:\Users\DHANANJAY\OneDrive\Desktop\ProjectCSharp\ECommerce\OrderService\obj\Debug\net9.0\OrderService.pdb
