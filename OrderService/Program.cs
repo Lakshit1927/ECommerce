@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OrderService.Data;
 using OrderService.Endpoints;
+using OrderService.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,12 +48,13 @@ if (!string.IsNullOrEmpty(secretKey))
     builder.Services.AddAuthorization();
 }
 
-// 🌐 HTTP Client for ProductService
-var productServiceUrl = builder.Configuration["ProductServiceUrl"] ?? "http://localhost:5001";
-builder.Services.AddHttpClient("ProductService", client =>
+// 🌐 HTTP Client for ProductService with Resilience
+var productServiceUrl = builder.Configuration["ProductServiceUrl"] ?? "http://localhost:5240";
+builder.Services.AddHttpClient<IProductService, ProductService>("ProductService", client =>
 {
     client.BaseAddress = new Uri(productServiceUrl);
     client.Timeout = TimeSpan.FromSeconds(30);
+    client.DefaultRequestHeaders.Add("User-Agent", "OrderService/1.0");
 });
 
 // 🚀 CORS Configuration
@@ -107,6 +109,14 @@ builder.Services.AddHealthChecks()
     .AddUrlGroup(new Uri($"{productServiceUrl}/health"), "ProductService");
 
 var app = builder.Build();
+
+// 🔄 Database Migration (for development)
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<OrderServiceContext>();
+    await context.Database.EnsureCreatedAsync();
+}
 
 // 🧱 Middleware Pipeline (Correct Order!)
 if (app.Environment.IsDevelopment())

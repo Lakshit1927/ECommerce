@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrderService.Dtos;
 
-public record CreateOrderDto
+public record UpdateOrderDto
 {
     [Required]
     [StringLength(100, MinimumLength = 1)]
@@ -16,5 +16,7 @@ public record CreateOrderDto
     [MinLength(1, ErrorMessage = "At least one product must be selected")]
     public List<int> ProductIds { get; init; } = new();
     
-    public DateTime OrderDate { get; init; } = DateTime.UtcNow;
+    [Required]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Total amount must be greater than 0")]
+    public decimal TotalAmount { get; init; }
 }

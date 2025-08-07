@@ -5,8 +5,25 @@ using System.Text;
 using AuthService.Endpoints;
 using AuthService.Models;
 using AuthService.Services;
+using AuthService.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 🔧 Database Configuration
+builder.Services.AddDbContext<AuthDbContext>(options =>
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        options.UseInMemoryDatabase("AuthDb");
+    }
+    else
+    {
+        // For production, use a real database
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        options.UseSqlServer(connectionString);
+    }
+});
 
 // 🔐 JWT Configuration with Validation
 var jwtSettings = builder.Configuration.GetSection("Jwt");
@@ -38,9 +55,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-// 🔑 Identity Services with Proper Lifetimes
+// 🔑 Identity Services and Repository
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddScoped<TokenService>(); // Changed from Singleton to Scoped
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // 🚀 CORS Configuration - More Secure
 builder.Services.AddCors(options =>
@@ -86,9 +104,18 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // 🏥 Health Checks
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<AuthDbContext>();
 
 var app = builder.Build();
+
+// 🔄 Database Migration (for development)
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+    await context.Database.EnsureCreatedAsync();
+}
 
 // 🧱 Middleware Pipeline (Correct Order!)
 if (app.Environment.IsDevelopment())
